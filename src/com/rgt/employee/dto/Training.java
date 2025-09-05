@@ -7,12 +7,11 @@ public class Training {
 	private int tid;
 	private String title;
 	private LocalDate duedate;
-	private String status;
+//	private String status;
 	
-	public Training(String title, LocalDate duedate, String status) {
+	public Training(String title, LocalDate duedate) {
 		this.title = title;
 		this.duedate = duedate;
-		this.status = status;
 	}
 	public int getTid() {
 		return tid;
@@ -32,12 +31,7 @@ public class Training {
 	public void setDuedate(LocalDate duedate) {
 		this.duedate = duedate;
 	}
-	public String getStatus() {
-		return status;
-	}
-	public void setStatus(String status) {
-		this.status = status;
-	}
+	
 	
 	
 	
