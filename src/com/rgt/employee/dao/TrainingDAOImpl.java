@@ -2,18 +2,18 @@ package com.rgt.employee.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
-
 import com.rgt.employee.connection.Connector;
 import com.rgt.employee.dto.Training;
 import com.rgt.employee.dto.User;
 
 public class TrainingDAOImpl implements TrainingDAO{
 
-	List<User> u=new ArrayList<>();
-	List<Training> t=new ArrayList<>();
+	ArrayList<User> ulist=new ArrayList<>();
+	ArrayList<Training> tlist=new ArrayList<>();
+	
 	private Connection con;	
 	public TrainingDAOImpl() {
 		this.con = Connector.requestConnection();
@@ -35,14 +35,67 @@ public class TrainingDAOImpl implements TrainingDAO{
 		if(i>0) {
 			return true;
 		}else {
-		return false;
+			return false;
+		}
 	}
-}
 
 	@Override
 	public boolean insertTraining(Training t) {
 		// TODO Auto-generated method stub
-		return false;
+		String query ="insert into training values(0,?,?)";
+		int i=0;
+		try {
+			PreparedStatement ps=con.prepareStatement(query);
+			ps.setString(1, t.getTitle());
+			ps.setObject(2, t.getDuedate());
+			i=ps.executeUpdate();	
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		if(i>0) {
+			return true;
+		}else {
+			return false;
+		}
 	}
 
+	public ArrayList<User> getUser() {
+		// TODO Auto-generated method stub
+		String query="select *from users where uid!=0";
+//     ArrayList<User> list=new ArrayList<User>();   
+		try {
+			PreparedStatement ps=con.prepareStatement(query);
+			ResultSet rs=ps.executeQuery();		
+			while(rs.next()) {
+				User u=new User();
+				u.setUid(rs.getInt("uid"));
+				u.setUname(rs.getString("uname"));
+				u.setUrole(rs.getString("urole"));
+				ulist.add(u);				
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return ulist;
+	}
+
+	@Override
+	public ArrayList<Training> getTraining() {
+		// TODO Auto-generated method stub
+		String query="select * from training where tid!=0 ";
+		try {
+			PreparedStatement ps=con.prepareStatement(query);
+			ResultSet rs=ps.executeQuery();
+			while(rs.next()) {
+				Training t=new Training();
+				t.setTid(rs.getInt("tid"));
+				t.setTitle(rs.getString("title"));
+				t.setDuedate(rs.getDate("dueDate").toLocalDate());
+				tlist.add(t);
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return tlist;
+	}	
 }

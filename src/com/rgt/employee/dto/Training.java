@@ -13,6 +13,8 @@ public class Training {
 		this.title = title;
 		this.duedate = duedate;
 	}
+	public Training() {
+	}
 	public int getTid() {
 		return tid;
 	}
@@ -30,9 +32,5 @@ public class Training {
 	}
 	public void setDuedate(LocalDate duedate) {
 		this.duedate = duedate;
-	}
-	
-	
-	
-	
+	}	
 }

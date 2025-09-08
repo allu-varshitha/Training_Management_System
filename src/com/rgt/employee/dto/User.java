@@ -10,6 +10,8 @@ public class User {
 		this.uname = uname;
 		this.urole = urole;
 	}
+	public User() {	
+	}
 
 	public int getUid() {
 		return uid;
