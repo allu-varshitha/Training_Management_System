@@ -7,7 +7,6 @@ public class Training {
 	private int tid;
 	private String title;
 	private LocalDate duedate;
-//	private String status;
 	
 	public Training(String title, LocalDate duedate) {
 		this.title = title;

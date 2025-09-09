@@ -16,18 +16,22 @@ public class Main {
 		List<User> u=new ArrayList<>();
 		List<Training> t=new ArrayList<>();
 		TrainingDAO tdao=new TrainingDAOImpl();	
-		//    Connector c=new Connector();
+		 //    Connector c=new Connector();
 		//    c.requestConnection();
 		int ch=0;
-		System.out.println("Welcome to Training App");
+		System.out.println("Welcome to training app");
 		System.out.println("enter choice: ");
 		do{
 			{
 				System.out.println("1.Add users");
-				System.out.println("2.Add Trainings");
-				System.out.println("3.Get Users");
-				System.out.println("4.Get Trainings");
-				System.out.println("5.Exit");
+				System.out.println("2.Add trainings");
+				System.out.println("3.Get users");
+				System.out.println("4.Get trainings");
+				System.out.println("5.delete user");
+				System.out.println("6.delete training");
+				System.out.println("7.update user");
+				System.out.println("8.update training");
+				System.out.println("9.Exit");
 				ch=sc.nextInt();
 				switch(ch)
 				{
@@ -36,9 +40,8 @@ public class Main {
 					sc.nextLine();
 					System.out.println("enter user name ");
 					String uname=sc.nextLine();
-					
 					System.out.println("enter use rolee");
-				    String urole=sc.nextLine();
+					String urole=sc.nextLine();
 					User ue=new User(uname, urole);
 					u.add(ue);
 					if(tdao.insertUsers(ue)) {
@@ -46,35 +49,32 @@ public class Main {
 					}else {
 						System.out.println("data not saved");
 					}
-					break;
-					
+				break;
 				case 2:
-					 System.out.println("enter training details");
-					 sc.nextLine();
-					 System.out.println("enter training title");
-					 String title=sc.nextLine();
-					 
-					 System.out.println("enter due date ");
-					 String date=sc.next();
-					 LocalDate dueDate=LocalDate.parse(date);
-					 Training te=new Training(title,dueDate);
-					 t.add(te);
-					 if(tdao.insertTraining(te)) {
-						 System.out.println("training data saved");
-					 }
-					 else {
-						 System.out.println("Data not saved");
-					 }
-					break; 
+					System.out.println("enter training details");
+					sc.nextLine();
+					System.out.println("enter training title");
+					String title=sc.nextLine();
+					System.out.println("enter due date ");
+					String date=sc.next();
+					LocalDate dueDate=LocalDate.parse(date);
+					Training te=new Training(title,dueDate);
+					t.add(te);
+					if(tdao.insertTraining(te)) {
+						System.out.println("training data saved");
+					}
+					else {
+						System.out.println("Data not saved");
+					}
+				break; 
 				case 3:
 					System.out.println("User Details:");
-//                   List<User> users=new ArrayList<>();
 					u = tdao.getUser();
 					for(int i=0;i<u.size();i++) {
 						User u1=u.get(i);
 						System.out.println("user id: " + u1.getUid() + ", User name: " + u1.getUname() + ", User role: " + u1.getUrole());
 					}
-			break;
+					break;
 				case 4:
 					System.out.println("Training Details:");
 					t = tdao.getTraining();
@@ -83,10 +83,88 @@ public class Main {
 						System.out.println("Training id: "+ t1.getTid() + ", Training Title: " + t1.getTitle() + ",Training due date: "+ t1.getDuedate());
 					}
 					break;
+				case 5:
+					System.out.println("enter user id to be deleted");
+					User u1=new User();
+					int uid=sc.nextInt();
+					u1.setUid(uid);
+					boolean result=tdao.deleteUser(u1);
+					if(result) {
+						System.out.println("user deleted");
+					}else {
+						System.out.println("failed to dleted");
+					}
+					break;
+				case 6:
+					System.out.println("enter training id to be deleted");
+					Training t1=new Training();
+					int tid=sc.nextInt();
+					t1.setTid(tid);
+					result=tdao.deleteTraining(t1);
+					if(result) {
+						System.out.println("training deleted");
+					}else {
+						System.out.println("not deleted");
+					}
+					break;
+				case 7:
+					System.out.println("update user details");
+					System.out.println("enter user id to updated");
+					int uid1=sc.nextInt();
+					System.out.println("enter new user name ");
+					String name =sc.next();
+					System.out.println("enter new user role");
+					String role=sc.next();
+					User updus=new User();
+					updus.setUid(uid1);
+					updus.setUname(name);
+					updus.setUrole(role);
+					result = tdao.updateUser(updus);
+					if (result) {System.out.println("updated suucessfully");
+					}else {
+						System.out.println("not updated");
+					}
+				break;
+				case 8:
+					System.out.println("update training details");
+					System.out.println("enter training id to updated");
+					int tid1=sc.nextInt();
+					System.out.println("enter new title");
+					String ttitle=sc.next();
+					System.out.println("enter new due date");
+					String tduedate=sc.next();
+					LocalDate dueDate1=LocalDate.parse(tduedate);
+					Training updtr=new Training();
+					updtr.setTid(tid1);
+					updtr.setTitle(ttitle);
+					updtr.setDuedate(dueDate1);
+					result=tdao.updateTraining(updtr);
+					if (result) {
+						System.out.println("updated");
+						
+					}else {
+						System.out.println("not updated");
+					}
+              break;
 				}
+			
+			
 			}
-		}while(ch!=5);
+		}while(ch!=9);
 
+		
 	}  
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

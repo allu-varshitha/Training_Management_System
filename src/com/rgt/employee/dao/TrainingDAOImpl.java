@@ -13,7 +13,7 @@ public class TrainingDAOImpl implements TrainingDAO{
 
 	ArrayList<User> ulist=new ArrayList<>();
 	ArrayList<Training> tlist=new ArrayList<>();
-	
+
 	private Connection con;	
 	public TrainingDAOImpl() {
 		this.con = Connector.requestConnection();
@@ -21,7 +21,6 @@ public class TrainingDAOImpl implements TrainingDAO{
 
 	@Override
 	public boolean insertUsers(User u) {
-		// TODO Auto-generated method stub
 		String query= "insert into users values(0,?,?)";
 		int i=0;
 		try {
@@ -41,7 +40,6 @@ public class TrainingDAOImpl implements TrainingDAO{
 
 	@Override
 	public boolean insertTraining(Training t) {
-		// TODO Auto-generated method stub
 		String query ="insert into training values(0,?,?)";
 		int i=0;
 		try {
@@ -60,10 +58,7 @@ public class TrainingDAOImpl implements TrainingDAO{
 	}
 
 	public ArrayList<User> getUser() {
-		// TODO Auto-generated method stub
-		String query="select *from users where uid!=0";
-//     ArrayList<User> list=new ArrayList<User>();   
-		try {
+		String query="select *from users where uid!=0";		try {
 			PreparedStatement ps=con.prepareStatement(query);
 			ResultSet rs=ps.executeQuery();		
 			while(rs.next()) {
@@ -81,7 +76,6 @@ public class TrainingDAOImpl implements TrainingDAO{
 
 	@Override
 	public ArrayList<Training> getTraining() {
-		// TODO Auto-generated method stub
 		String query="select * from training where tid!=0 ";
 		try {
 			PreparedStatement ps=con.prepareStatement(query);
@@ -97,5 +91,86 @@ public class TrainingDAOImpl implements TrainingDAO{
 			e.printStackTrace();
 		}
 		return tlist;
-	}	
+	}
+
+	@Override
+	public boolean deleteUser(User u) {
+		String query="delete from users where uid=?";
+		PreparedStatement ps;
+		int i=0;
+		try {
+			ps=con.prepareStatement(query);
+			ps.setInt(1, u.getUid());
+			i=ps.executeUpdate();
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		if(i>0) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean deleteTraining(Training t) {
+		String query="delete from training where tid=?";
+		PreparedStatement ps;
+		int i=0;
+		try {
+			ps=con.prepareStatement(query);
+			ps.setInt(1, t.getTid());
+			i=ps.executeUpdate();
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		if(i>0) {
+			return true;
+		}else {
+			return false;
+		}	
+	}
+
+	@Override
+	public boolean updateUser(User u) {
+		String query="update users set uname=?,urole=? where uid=?";
+		int i=0;
+		try {
+			PreparedStatement ps=con.prepareStatement(query);
+			ps.setString(1,u.getUname());
+			ps.setString(2, u.getUrole());
+			ps.setInt(3, u.getUid());
+			i=ps.executeUpdate();
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		if(i>0) {
+			return true;
+		}else {
+			return false;
+
+		}
+
+}
+
+	@Override
+	public boolean updateTraining(Training t) {
+         String query = "update training set title=?,duedate=? where tid=?";
+         int i=0;
+         try {
+        	 PreparedStatement ps=con.prepareStatement(query);
+        	 ps.setString(1, t.getTitle());
+        	 ps.setObject(2,t.getDuedate());
+        	 ps.setInt(3, t.getTid());
+        	 i=ps.executeUpdate();
+         }catch(SQLException e) {
+        	 e.printStackTrace();
+         }
+         if(i>0) {
+        	 return true;
+         }else {
+         
+        	 return false;
+         }
+	}
 }

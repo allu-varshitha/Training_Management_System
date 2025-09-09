@@ -10,4 +10,8 @@ public interface TrainingDAO {
 	public boolean insertTraining(Training t);
 	public ArrayList<User> getUser();
 	public ArrayList<Training> getTraining();
+	public boolean deleteUser(User u);
+	public boolean deleteTraining(Training t);
+	public boolean updateUser(User u);
+	public boolean updateTraining(Training t);
 }
