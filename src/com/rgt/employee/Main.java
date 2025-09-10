@@ -30,8 +30,9 @@ public class Main {
 				System.out.println("5.delete user");
 				System.out.println("6.delete training");
 				System.out.println("7.update user");
-				System.out.println("8.update training");
-				System.out.println("9.Exit");
+				System.out.println(" 8.update training");
+				System.out.println(" 9. asiign training ");
+				System.out.println("11.exit");
 				ch=sc.nextInt();
 				switch(ch)
 				{
@@ -58,7 +59,7 @@ public class Main {
 					System.out.println("enter due date ");
 					String date=sc.next();
 					LocalDate dueDate=LocalDate.parse(date);
-					Training te=new Training(title,dueDate);
+					Training te=new Training(title,dueDate,null);
 					t.add(te);
 					if(tdao.insertTraining(te)) {
 						System.out.println("training data saved");
@@ -68,19 +69,19 @@ public class Main {
 					}
 				break; 
 				case 3:
-					System.out.println("User Details:");
+					System.out.println("User Details");
 					u = tdao.getUser();
 					for(int i=0;i<u.size();i++) {
 						User u1=u.get(i);
-						System.out.println("user id: " + u1.getUid() + ", User name: " + u1.getUname() + ", User role: " + u1.getUrole());
+						System.out.println("user id " + u1.getUid() + ", User name " + u1.getUname() + ", User role " + u1.getUrole());
 					}
 					break;
 				case 4:
-					System.out.println("Training Details:");
+					System.out.println("Training Details ");
 					t = tdao.getTraining();
 					for(int i=0;i<t.size();i++) {
 						Training t1=t.get(i);
-						System.out.println("Training id: "+ t1.getTid() + ", Training Title: " + t1.getTitle() + ",Training due date: "+ t1.getDuedate());
+						System.out.println("Training id "+ t1.getTid() + ", Training Title " + t1.getTitle() + ",Training due date "+ t1.getDuedate()+", status "+ t1.getMapstatus());
 					}
 					break;
 				case 5:
@@ -146,11 +147,26 @@ public class Main {
 						System.out.println("not updated");
 					}
               break;
+              
+				case 9:
+					System.out.println("assign training ");
+					System.out.println("enter uid");
+					int uid2=sc.nextInt();
+					System.out.println("enter tid");
+					int tid2=sc.nextInt();
+					result=tdao.assigntraining(uid2, tid2);
+					if(result) {
+						System.out.println("assigned pedning ");
+					}else {
+						System.out.println("not assigned");
+					}
+					break;
+
 				}
 			
 			
 			}
-		}while(ch!=9);
+		}while(ch!=11);
 
 		
 	}  

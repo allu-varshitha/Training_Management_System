@@ -14,4 +14,5 @@ public interface TrainingDAO {
 	public boolean deleteTraining(Training t);
 	public boolean updateUser(User u);
 	public boolean updateTraining(Training t);
+	public boolean assigntraining(int uid,int tid);
 }

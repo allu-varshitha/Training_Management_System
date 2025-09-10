@@ -46,6 +46,7 @@ public class TrainingDAOImpl implements TrainingDAO{
 			PreparedStatement ps=con.prepareStatement(query);
 			ps.setString(1, t.getTitle());
 			ps.setObject(2, t.getDuedate());
+		
 			i=ps.executeUpdate();	
 		}catch(SQLException e) {
 			e.printStackTrace();
@@ -58,7 +59,9 @@ public class TrainingDAOImpl implements TrainingDAO{
 	}
 
 	public ArrayList<User> getUser() {
-		String query="select *from users where uid!=0";		try {
+		String query="select *from users where uid!=0";		
+		
+		try {
 			PreparedStatement ps=con.prepareStatement(query);
 			ResultSet rs=ps.executeQuery();		
 			while(rs.next()) {
@@ -76,21 +79,25 @@ public class TrainingDAOImpl implements TrainingDAO{
 
 	@Override
 	public ArrayList<Training> getTraining() {
-		String query="select * from training where tid!=0 ";
+		String query="select * from training ";
+		ArrayList<Training> tlist1=new ArrayList<>();
 		try {
 			PreparedStatement ps=con.prepareStatement(query);
 			ResultSet rs=ps.executeQuery();
+		
 			while(rs.next()) {
 				Training t=new Training();
-				t.setTid(rs.getInt("tid"));
+			t.setTid(rs.getInt("tid"));
+//			System.out.println("id added");
+//			System.out.println(rs.getInt("tid"));
 				t.setTitle(rs.getString("title"));
 				t.setDuedate(rs.getDate("dueDate").toLocalDate());
-				tlist.add(t);
+				tlist1.add(t);
 			}
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
-		return tlist;
+		return tlist1;
 	}
 
 	@Override
@@ -172,5 +179,31 @@ public class TrainingDAOImpl implements TrainingDAO{
          
         	 return false;
          }
+         
 	}
+	
+
+	@Override
+	public boolean assigntraining(int uid, int tid) {
+         String query = "insert into trainingassignment  values (?,?,?)";
+         int i=0;
+         try {
+        	 PreparedStatement ps=con.prepareStatement(query);
+        	 ps.setInt(1,uid);
+        	 ps.setInt(2, tid);
+        	 ps.setString(3, "pending");
+        	 i=ps.executeUpdate();
+         }catch(SQLException e) {
+        	 e.printStackTrace();
+         }
+         if(i>0) {
+        	 return true;
+         }else {
+     		return false;
+
+         }
+	
+	}
+
+	
 }

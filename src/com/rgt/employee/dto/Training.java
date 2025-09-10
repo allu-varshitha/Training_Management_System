@@ -1,16 +1,21 @@
 package com.rgt.employee.dto;
 
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Training {
 
 	private int tid;
 	private String title;
 	private LocalDate duedate;
+	private  Map<Integer,String> mapstatus = new HashMap<>();
 	
-	public Training(String title, LocalDate duedate) {
+	
+	public Training(String title, LocalDate duedate, Map<Integer, String> mapstatus) {
 		this.title = title;
 		this.duedate = duedate;
+		this.mapstatus = mapstatus;
 	}
 	public Training() {
 	}
@@ -31,5 +36,15 @@ public class Training {
 	}
 	public void setDuedate(LocalDate duedate) {
 		this.duedate = duedate;
-	}	
+	}
+	public Map<Integer, String> getMapstatus() {
+		return mapstatus;
+	}
+	public void assignTraining(int uid2) {
+
+		this.mapstatus.put(uid2,"pending");
+	}
+
+	
+	
 }
