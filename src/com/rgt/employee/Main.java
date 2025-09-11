@@ -30,8 +30,8 @@ public class Main {
 				System.out.println("5.delete user");
 				System.out.println("6.delete training");
 				System.out.println("7.update user");
-				System.out.println(" 8.update training");
-				System.out.println(" 9. asiign training ");
+				System.out.println("8.update training");
+				System.out.println("9. asiign training ");
 				System.out.println("11.exit");
 				ch=sc.nextInt();
 				switch(ch)
@@ -176,11 +176,6 @@ public class Main {
 	
 	
 	
-	
-	
-	
-	
-	
-	
+		
 	
 }

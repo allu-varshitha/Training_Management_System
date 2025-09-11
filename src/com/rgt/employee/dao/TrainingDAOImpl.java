@@ -5,6 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.rgt.employee.connection.Connector;
 import com.rgt.employee.dto.Training;
 import com.rgt.employee.dto.User;
@@ -13,7 +17,7 @@ public class TrainingDAOImpl implements TrainingDAO{
 
 	ArrayList<User> ulist=new ArrayList<>();
 	ArrayList<Training> tlist=new ArrayList<>();
-
+	
 	private Connection con;	
 	public TrainingDAOImpl() {
 		this.con = Connector.requestConnection();
@@ -59,7 +63,7 @@ public class TrainingDAOImpl implements TrainingDAO{
 	}
 
 	public ArrayList<User> getUser() {
-		String query="select *from users where uid!=0";		
+		String query="select *from users ";		
 		
 		try {
 			PreparedStatement ps=con.prepareStatement(query);
@@ -92,6 +96,7 @@ public class TrainingDAOImpl implements TrainingDAO{
 //			System.out.println(rs.getInt("tid"));
 				t.setTitle(rs.getString("title"));
 				t.setDuedate(rs.getDate("dueDate").toLocalDate());
+              	t.mapstatus=getstatus(rs.getInt("tid"));
 				tlist1.add(t);
 			}
 		}catch(SQLException e) {
@@ -181,7 +186,26 @@ public class TrainingDAOImpl implements TrainingDAO{
          }
          
 	}
-	
+    public Map<Integer,String> getstatus(int tid){
+    	
+    	String query="select uid,status from trainingassignment where tid=?";
+    	 Map<Integer,String> getstatus=new HashMap<>();
+    	try {
+    		PreparedStatement ps=con.prepareStatement(query);
+    		ps.setInt(1, tid);
+    		ResultSet rs=ps.executeQuery();
+    		while(rs.next()) {
+    			int uid=  rs.getInt("Uid");
+    		 String status=rs.getString("status");
+    		 getstatus.put(uid,status);
+    		}
+    	}catch(SQLException e) {
+    		e.printStackTrace();
+    	}
+		return getstatus;
+    	
+    }
+
 
 	@Override
 	public boolean assigntraining(int uid, int tid) {
