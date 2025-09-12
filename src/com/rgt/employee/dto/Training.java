@@ -46,6 +46,9 @@ public class Training {
 		this.mapstatus.put(uid2,"pending");
 	}
 
+	public void markcomplete(int uid3) {
+		this.mapstatus.put(uid3, "completed");
+	}
 	
 	
 }

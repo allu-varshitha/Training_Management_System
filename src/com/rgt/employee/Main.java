@@ -32,6 +32,7 @@ public class Main {
 				System.out.println("7.update user");
 				System.out.println("8.update training");
 				System.out.println("9. asiign training ");
+				System.out.println("10.mark completed");
 				System.out.println("11.exit");
 				ch=sc.nextInt();
 				switch(ch)
@@ -161,7 +162,19 @@ public class Main {
 						System.out.println("not assigned");
 					}
 					break;
-
+				case 10:
+					System.out.println("updates status");
+					System.out.println("enter uid");
+					int uid3=sc.nextInt();
+					System.out.println("enter tid");
+					int tid3=sc.nextInt();
+					result=tdao.markcomplete(uid3, tid3);
+					if(result) {
+				System.out.println("updated");
+					}else {
+						System.out.println("not updated");
+					}
+					
 				}
 			
 			

@@ -15,4 +15,5 @@ public interface TrainingDAO {
 	public boolean updateUser(User u);
 	public boolean updateTraining(Training t);
 	public boolean assigntraining(int uid,int tid);
+	public boolean markcomplete(int uid,int tid);
 }

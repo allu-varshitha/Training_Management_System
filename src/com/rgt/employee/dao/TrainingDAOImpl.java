@@ -197,7 +197,10 @@ public class TrainingDAOImpl implements TrainingDAO{
     		while(rs.next()) {
     			int uid=  rs.getInt("Uid");
     		 String status=rs.getString("status");
+    		 System.out.println(rs.getString("status"));
+    		 
     		 getstatus.put(uid,status);
+    		
     		}
     	}catch(SQLException e) {
     		e.printStackTrace();
@@ -228,6 +231,27 @@ public class TrainingDAOImpl implements TrainingDAO{
          }
 	
 	}
+
+	@Override
+	public boolean markcomplete(int uid,int tid) {
+      String query=" update trainingassignment set status=? where uid=? and tid=? ";
+      int i=0;
+      try {
+    	  PreparedStatement ps=con.prepareStatement(query);
+    	  ps.setString(1, "completed");
+    	  ps.setInt(2, uid);
+    	  ps.setInt(3, tid);
+    	  i=ps.executeUpdate();
+      }catch(SQLException e) {
+    	  e.printStackTrace();
+      }
+      if(i>0) {
+    	  return true;
+      }
+      else {
+		return false;
+	}
+	}    
 
 	
 }
