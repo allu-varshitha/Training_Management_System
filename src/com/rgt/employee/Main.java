@@ -33,7 +33,9 @@ public class Main {
 				System.out.println("8.update training");
 				System.out.println("9. asiign training ");
 				System.out.println("10.mark completed");
-				System.out.println("11.exit");
+				System.out.println("11.Get overdue trainings");
+				System.out.println("12.get assigned trainings");
+				System.out.println("13.exit");
 				ch=sc.nextInt();
 				switch(ch)
 				{
@@ -75,6 +77,7 @@ public class Main {
 					for(int i=0;i<u.size();i++) {
 						User u1=u.get(i);
 						System.out.println("user id " + u1.getUid() + ", User name " + u1.getUname() + ", User role " + u1.getUrole());
+					
 					}
 					break;
 				case 4:
@@ -83,6 +86,8 @@ public class Main {
 					for(int i=0;i<t.size();i++) {
 						Training t1=t.get(i);
 						System.out.println("Training id "+ t1.getTid() + ", Training Title " + t1.getTitle() + ",Training due date "+ t1.getDuedate()+", status "+ t1.getMapstatus());
+					
+					
 					}
 					break;
 				case 5:
@@ -174,21 +179,47 @@ public class Main {
 					}else {
 						System.out.println("not updated");
 					}
+					break;
 					
+				case 11:
+					System.out.println("over due details");
+					    t = tdao.getoverdue();
+					for(int i=0;i<t.size();i++) {
+						Training t2=t.get(i);
+						if(t2.getMapstatus().isEmpty() ) {
+							continue;	
+						}else if(t2.getMapstatus().containsValue("completed")) {
+							continue;
+						}
+						System.out.println("Over due details "+"Training id "+ t2.getTid() + ", Training Title " + t2.getTitle() + ",Training due date "+ t2.getDuedate()+", status "+ t2.getMapstatus());
+					}
+             break;
+				case 12:
+					System.out.println("get assigned trainings");
+					System.out.println("enter uid");
+					int uid4=sc.nextInt();
+					t=tdao.getassignedtrainings(uid4);
+					for(int i=0;i<t.size();i++) {
+						Training assigntrain=t.get(i);
+						if(t.isEmpty()) {
+							System.out.println("no trainings assigned for it");
+						}else {
+						System.out.println("training assigned to user "+assigntrain.getTitle()+" is pendinng");
+					}
+					}
+					
+				break;	
+				
 				}
+				
 			
 			
 			}
-		}while(ch!=11);
+		}while(ch!=13);
 
 		
 	}  
 
 	
-	
-	
-	
-	
-		
 	
 }

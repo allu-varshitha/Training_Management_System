@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -197,10 +198,10 @@ public class TrainingDAOImpl implements TrainingDAO{
     		while(rs.next()) {
     			int uid=  rs.getInt("Uid");
     		 String status=rs.getString("status");
-    		 System.out.println(rs.getString("status"));
+//    		 System.out.println(rs.getString("status"));
     		 
     		 getstatus.put(uid,status);
-    		
+   
     		}
     	}catch(SQLException e) {
     		e.printStackTrace();
@@ -251,7 +252,56 @@ public class TrainingDAOImpl implements TrainingDAO{
       else {
 		return false;
 	}
-	}    
+}
+
+	@Override
+	public ArrayList<Training> getoverdue() {
+		String query=" select * from training where duedate < ? ";
+		ArrayList<Training> duelist=new ArrayList<>();
+		try {
+			PreparedStatement ps=con.prepareStatement(query);
+			ps.setObject(1,LocalDate.now());
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				Training t=new Training();
+				t.setTid(rs.getInt("Tid"));
+				t.setTitle(rs.getString("Title"));
+				t.setDuedate(rs.getDate("duedate").toLocalDate());
+				t.mapstatus = getstatus(t.getTid());
+				duelist.add(t);
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return duelist;
+	}
+
+	@Override
+	public ArrayList<Training> getassignedtrainings(int uid) {
+	
+		String query="select tid from trainingassignment where uid=?";
+		ArrayList<Training> asstraining=new ArrayList<>();
+		try {
+			PreparedStatement ps=con.prepareStatement(query);
+			ps.setInt(1, uid);
+			ResultSet rs=ps.executeQuery();
+			while(rs.next()) {
+				int tid=rs.getInt("tid");
+				ArrayList<Training> tlist=getTraining();
+				if(tlist!=null) {
+				asstraining.addAll(tlist);
+			}
+				break;
+			}
+			
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return asstraining;
+	}
+
 
 	
 }
+
