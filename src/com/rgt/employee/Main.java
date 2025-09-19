@@ -86,8 +86,7 @@ public class Main {
 					for(int i=0;i<t.size();i++) {
 						Training t1=t.get(i);
 						System.out.println("Training id "+ t1.getTid() + ", Training Title " + t1.getTitle() + ",Training due date "+ t1.getDuedate()+", status "+ t1.getMapstatus());
-					
-					
+						
 					}
 					break;
 				case 5:
@@ -175,7 +174,7 @@ public class Main {
 					int tid3=sc.nextInt();
 					result=tdao.markcomplete(uid3, tid3);
 					if(result) {
-				System.out.println("updated");
+				          System.out.println("updated");
 					}else {
 						System.out.println("not updated");
 					}
@@ -189,9 +188,11 @@ public class Main {
 						if(t2.getMapstatus().isEmpty() ) {
 							continue;	
 						}else if(t2.getMapstatus().containsValue("completed")) {
+							
 							continue;
-						}
+						}else {
 						System.out.println("Over due details "+"Training id "+ t2.getTid() + ", Training Title " + t2.getTitle() + ",Training due date "+ t2.getDuedate()+", status "+ t2.getMapstatus());
+					}
 					}
              break;
 				case 12:
@@ -199,22 +200,27 @@ public class Main {
 					System.out.println("enter uid");
 					int uid4=sc.nextInt();
 					t=tdao.getassignedtrainings(uid4);
+					if(t.isEmpty()) {
+						System.out.println("no trainings assigned");
+					}else {
 					for(int i=0;i<t.size();i++) {
-						Training assigntrain=t.get(i);
-						if(t.isEmpty()) {
-							System.out.println("no trainings assigned for it");
-						}else {
-						System.out.println("training assigned to user "+assigntrain.getTitle()+" is pendinng");
+						Training assign=t.get(i);
+						if(assign.getMapstatus().containsValue("pending")) {
+							System.out.println(assign.getTitle()+" is pending");
+						}else if(assign.getMapstatus().containsValue("completed")) {
+							System.out.println(assign.getTitle()+" is completed");
+						}
 					}
 					}
 					
 				break;	
-				
+			
+				}
 				}
 				
 			
 			
-			}
+			
 		}while(ch!=13);
 
 		

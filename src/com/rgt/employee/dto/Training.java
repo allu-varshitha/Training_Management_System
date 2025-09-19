@@ -9,7 +9,7 @@ public class Training {
 	private int tid;
 	private String title;
 	private LocalDate duedate;
-	public Map<Integer,String> mapstatus = new HashMap<>();
+	private Map<Integer,String> mapstatus = new HashMap<>();
 	
 	
 	public Training(String title, LocalDate duedate, Map<Integer, String> mapstatus) {
@@ -37,10 +37,14 @@ public class Training {
 	public void setDuedate(LocalDate duedate) {
 		this.duedate = duedate;
 	}
+	
+	
 	public Map<Integer, String> getMapstatus() {
 		return mapstatus;
 	}
-	
+	public void setMapstatus(Map<Integer, String> mapstatus) {
+		this.mapstatus = mapstatus;
+	}
 	public void assignTraining(int uid2) {
 
 		this.mapstatus.put(uid2,"pending");

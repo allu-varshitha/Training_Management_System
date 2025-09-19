@@ -32,7 +32,8 @@ public class TrainingDAOImpl implements TrainingDAO{
 			PreparedStatement ps=con.prepareStatement(query);
 			ps.setString(1,u.getUname());
 			ps.setString(2,u.getUrole());
-			i=ps.executeUpdate();
+			
+			i=ps.executeUpdate();//i=1
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
@@ -65,7 +66,7 @@ public class TrainingDAOImpl implements TrainingDAO{
 
 	public ArrayList<User> getUser() {
 		String query="select *from users ";		
-		
+		ArrayList<User> ulist1=new ArrayList<>();
 		try {
 			PreparedStatement ps=con.prepareStatement(query);
 			ResultSet rs=ps.executeQuery();		
@@ -74,12 +75,12 @@ public class TrainingDAOImpl implements TrainingDAO{
 				u.setUid(rs.getInt("uid"));
 				u.setUname(rs.getString("uname"));
 				u.setUrole(rs.getString("urole"));
-				ulist.add(u);				
+				ulist1.add(u);				
 			}
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
-		return ulist;
+		return ulist1;
 	}
 
 	@Override
@@ -97,7 +98,7 @@ public class TrainingDAOImpl implements TrainingDAO{
 //			System.out.println(rs.getInt("tid"));
 				t.setTitle(rs.getString("title"));
 				t.setDuedate(rs.getDate("dueDate").toLocalDate());
-              	t.mapstatus=getstatus(rs.getInt("tid"));
+              	t.setMapstatus(getstatus(rs.getInt("tid")));
 				tlist1.add(t);
 			}
 		}catch(SQLException e) {
@@ -256,7 +257,10 @@ public class TrainingDAOImpl implements TrainingDAO{
 
 	@Override
 	public ArrayList<Training> getoverdue() {
-		String query=" select * from training where duedate < ? ";
+		String query=" select * from training where duedate <? ";// to print due dates
+//		String query=" select * from training where duedate >? ";// to print future due dates
+//		String query=" select * from training where duedate =? ";// to priint todays due dtae
+
 		ArrayList<Training> duelist=new ArrayList<>();
 		try {
 			PreparedStatement ps=con.prepareStatement(query);
@@ -267,7 +271,7 @@ public class TrainingDAOImpl implements TrainingDAO{
 				t.setTid(rs.getInt("Tid"));
 				t.setTitle(rs.getString("Title"));
 				t.setDuedate(rs.getDate("duedate").toLocalDate());
-				t.mapstatus = getstatus(t.getTid());
+				t.setMapstatus(getstatus(t.getTid()));
 				duelist.add(t);
 			}
 		}catch(SQLException e) {
@@ -280,25 +284,27 @@ public class TrainingDAOImpl implements TrainingDAO{
 	public ArrayList<Training> getassignedtrainings(int uid) {
 	
 		String query="select tid from trainingassignment where uid=?";
-		ArrayList<Training> asstraining=new ArrayList<>();
+		ArrayList<Training> assigntraining=new ArrayList<>();
 		try {
 			PreparedStatement ps=con.prepareStatement(query);
 			ps.setInt(1, uid);
 			ResultSet rs=ps.executeQuery();
+			ArrayList<Training> training=getTraining();
+
 			while(rs.next()) {
-				int tid=rs.getInt("tid");
-				ArrayList<Training> tlist=getTraining();
-				if(tlist!=null) {
-				asstraining.addAll(tlist);
+				int tid=rs.getInt("Tid");
+                
+				for(int i=0;i<training.size();i++) {
+					Training t= training.get(i);
+					if(t.getTid()==tid) {
+						assigntraining.add(t);
+					}
+				}
 			}
-				break;
-			}
-			
-			
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
-		return asstraining;
+		return assigntraining;
 	}
 
 
