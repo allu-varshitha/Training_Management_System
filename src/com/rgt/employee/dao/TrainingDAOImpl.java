@@ -214,7 +214,7 @@ public class TrainingDAOImpl implements TrainingDAO{
 
 	@Override
 	public boolean assigntraining(int uid, int tid) {
-         String query = "insert into trainingassignment  values (?,?,?)";
+         String query = "insert into trainingassignment values (?,?,?)";
          int i=0;
          try {
         	 PreparedStatement ps=con.prepareStatement(query);
@@ -280,6 +280,7 @@ public class TrainingDAOImpl implements TrainingDAO{
 		return duelist;
 	}
 
+	
 	@Override
 	public ArrayList<Training> getassignedtrainings(int uid) {
 	
@@ -290,10 +291,8 @@ public class TrainingDAOImpl implements TrainingDAO{
 			ps.setInt(1, uid);
 			ResultSet rs=ps.executeQuery();
 			ArrayList<Training> training=getTraining();
-
 			while(rs.next()) {
 				int tid=rs.getInt("Tid");
-                
 				for(int i=0;i<training.size();i++) {
 					Training t= training.get(i);
 					if(t.getTid()==tid) {
@@ -306,6 +305,36 @@ public class TrainingDAOImpl implements TrainingDAO{
 		}
 		return assigntraining;
 	}
+
+	@Override
+	public List<Training> searchkey(String title) {
+
+		String query="select * from training where title like ?";
+		
+		ArrayList<Training> searchkey = new ArrayList<>();
+		try {
+			PreparedStatement ps= con.prepareStatement(query);
+			ps.setString(1,title);
+			ResultSet rs=ps.executeQuery();
+			while(rs.next()) {
+				Training t=new Training();
+				t.setTid(rs.getInt("Tid"));
+				t.setTitle(rs.getString("Title"));
+				t.setDuedate(rs.getDate("duedate").toLocalDate());
+				t.setMapstatus(getstatus(t.getTid()));
+				
+				searchkey.add(t);				
+				
+			}
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return searchkey;
+	}
+
+
 
 
 	

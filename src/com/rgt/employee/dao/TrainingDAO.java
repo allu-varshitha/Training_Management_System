@@ -21,4 +21,7 @@ public interface TrainingDAO {
 	public ArrayList<Training> getoverdue();
 	
 	public ArrayList<Training> getassignedtrainings(int uid);
+	
+	public List<Training> searchkey(String title);
+	
 }

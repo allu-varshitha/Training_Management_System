@@ -35,7 +35,8 @@ public class Main {
 				System.out.println("10.mark completed");
 				System.out.println("11.Get overdue trainings");
 				System.out.println("12.get assigned trainings");
-				System.out.println("13.exit");
+				System.out.println("13.search key");
+				System.out.println("14.exit");
 				ch=sc.nextInt();
 				switch(ch)
 				{
@@ -214,14 +215,29 @@ public class Main {
 					}
 					
 				break;	
-			
-				}
+				case 13:
+					
+					System.out.println("Search based on keyword");
+					System.out.println("enter title");
+					sc.nextLine();
+					String trainingtitle=sc.nextLine();
+					t=tdao.searchkey(trainingtitle);
+					if(t.isEmpty()) {
+						System.out.println("no training is found");
+					}else {
+						for(int i=0;i<t.size();i++) {
+							Training search=t.get(i);
+						    System.out.println(" Training found at : "+ " training id "+search.getTid()+",training title "+search.getTitle()+",training due date "+ search.getDuedate()+",training status "+search.getMapstatus());	
+						}
+					}
+					break;
 				}
 				
+				}
 			
 			
 			
-		}while(ch!=13);
+		}while(ch!=14);
 
 		
 	}  
