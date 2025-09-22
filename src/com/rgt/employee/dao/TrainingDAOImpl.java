@@ -314,7 +314,7 @@ public class TrainingDAOImpl implements TrainingDAO{
 		ArrayList<Training> searchkey = new ArrayList<>();
 		try {
 			PreparedStatement ps= con.prepareStatement(query);
-			ps.setString(1,title);
+			ps.setString(1,"%"+title+"%");
 			ResultSet rs=ps.executeQuery();
 			while(rs.next()) {
 				Training t=new Training();
