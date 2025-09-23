@@ -24,4 +24,6 @@ public interface TrainingDAO {
 	
 	public List<Training> searchkey(String title);
 	
+	public boolean multipletraining(List<User> uid,int tid);
+	
 }

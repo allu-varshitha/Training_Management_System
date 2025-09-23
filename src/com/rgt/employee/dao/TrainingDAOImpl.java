@@ -334,6 +334,31 @@ public class TrainingDAOImpl implements TrainingDAO{
 		return searchkey;
 	}
 
+	@Override
+	public boolean multipletraining(List<User> uid, int tid) {
+
+		String query="insert into trainingassignment values(?,?,?)";
+		int i=0;
+		
+		try {
+			PreparedStatement ps=con.prepareStatement(query);
+			for(int j=0;j<uid.size();j++) {
+			User user=uid.get(j);
+			ps.setInt(1,user.getUid());
+			ps.setInt(2, tid);
+			ps.setString(3, "pending");
+			i=ps.executeUpdate();
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		if(i>0) {
+			return true;
+		}
+		else {
+		return false;
+	}
+	}
 
 
 

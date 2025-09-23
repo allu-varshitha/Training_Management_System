@@ -36,7 +36,8 @@ public class Main {
 				System.out.println("11.Get overdue trainings");
 				System.out.println("12.get assigned trainings");
 				System.out.println("13.search key");
-				System.out.println("14.exit");
+				System.out.println("14.multiple trainings");
+				System.out.println("15.exit");
 				ch=sc.nextInt();
 				switch(ch)
 				{
@@ -231,13 +232,34 @@ public class Main {
 						}
 					}
 					break;
-				}
+					
+					
+				case 14:
+					System.out.println("assign training to multiple users");
+                    System.out.println("select tid");
+					t=tdao.getTraining();
+					for(int i=0;i<t.size();i++) {
+						Training tr=t.get(i);
+						System.out.println(" tid "+tr.getTid()+ " ,title "+tr.getTitle()+" ,duedate "+tr.getDuedate()+" ,status "+tr.getMapstatus());
+					}
+					int tid5=sc.nextInt();
+                    sc.nextLine();
+                    System.out.println("select uid");
+					u=tdao.getUser();
+					for(int i=0;i<u.size();i++) {
+						User ur=u.get(i);
+						System.out.println(" uid "+ur.getUid()+" ,uname "+ur.getUname()+" ,urole "+ur.getUrole());
+					}
+					sc.nextLine();
+			        result=tdao.multipletraining(u, tid5);
 				
+				break;
+				}
 				}
 			
 			
 			
-		}while(ch!=14);
+		}while(ch!=15);
 
 		
 	}  
