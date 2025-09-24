@@ -335,33 +335,60 @@ public class TrainingDAOImpl implements TrainingDAO{
 	}
 
 	@Override
-	public boolean multipletraining(List<User> uid, int tid) {
+	public void multipleuserspending(List<Integer> uids, int tid) {
 
 		String query="insert into trainingassignment values(?,?,?)";
 		int i=0;
-		
+		for(int j=0;j<uids.size();j++) {
+			
+//			assigntraining(uids.get(j), tid);
+			
+			PreparedStatement ps;
+			try {
+				ps = con.prepareStatement(query);
+				ps.setInt(1,uids.get(j));
+				ps.setInt(2, tid);
+				ps.setString(3, "pending");
+				i=ps.executeUpdate();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			if(i>0) {
+				System.out.println("Training assigned successfully to user: "+uids.get(j));
+			}else {
+				System.out.println("Training not assigned to user: "+uids.get(j));
+			}
+		}
+	}
+
+	@Override
+	public List<Training> getduedatebydate(LocalDate date) {
+		String query=" select * from training where duedate <= ?  ";
+
+		ArrayList<Training> duelist=new ArrayList<>();
 		try {
 			PreparedStatement ps=con.prepareStatement(query);
-			for(int j=0;j<uid.size();j++) {
-			User user=uid.get(j);
-			ps.setInt(1,user.getUid());
-			ps.setInt(2, tid);
-			ps.setString(3, "pending");
-			i=ps.executeUpdate();
+			ps.setObject(1,LocalDate.now());
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				Training t=new Training();
+				t.setTid(rs.getInt("Tid"));
+				t.setTitle(rs.getString("Title"));
+				t.setDuedate(rs.getDate("duedate").toLocalDate());
+				t.setMapstatus(getstatus(t.getTid()));
+				duelist.add(t);
 			}
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
-		if(i>0) {
-			return true;
-		}
-		else {
-		return false;
+		return duelist;
 	}
-	}
+	
+	
+}
 
 
 
 	
-}
+
 

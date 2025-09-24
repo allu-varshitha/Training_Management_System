@@ -3,6 +3,7 @@ package com.rgt.employee;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import com.rgt.employee.dto.Training;
 import com.rgt.employee.dto.User;
@@ -16,7 +17,7 @@ public class Main {
 		List<User> u=new ArrayList<>();
 		List<Training> t=new ArrayList<>();
 		TrainingDAO tdao=new TrainingDAOImpl();	
-		 //    Connector c=new Connector();
+		//    Connector c=new Connector();
 		//    c.requestConnection();
 		int ch=0;
 		System.out.println("Welcome to training app");
@@ -37,7 +38,8 @@ public class Main {
 				System.out.println("12.get assigned trainings");
 				System.out.println("13.search key");
 				System.out.println("14.multiple trainings");
-				System.out.println("15.exit");
+				System.out.println("15.get assigned user by date");
+				System.out.println("16.exit");
 				ch=sc.nextInt();
 				switch(ch)
 				{
@@ -55,7 +57,7 @@ public class Main {
 					}else {
 						System.out.println("data not saved");
 					}
-				break;
+					break;
 				case 2:
 					System.out.println("enter training details");
 					sc.nextLine();
@@ -72,14 +74,14 @@ public class Main {
 					else {
 						System.out.println("Data not saved");
 					}
-				break; 
+					break; 
 				case 3:
 					System.out.println("User Details");
 					u = tdao.getUser();
 					for(int i=0;i<u.size();i++) {
 						User u1=u.get(i);
 						System.out.println("user id " + u1.getUid() + ", User name " + u1.getUname() + ", User role " + u1.getUrole());
-					
+
 					}
 					break;
 				case 4:
@@ -88,7 +90,7 @@ public class Main {
 					for(int i=0;i<t.size();i++) {
 						Training t1=t.get(i);
 						System.out.println("Training id "+ t1.getTid() + ", Training Title " + t1.getTitle() + ",Training due date "+ t1.getDuedate()+", status "+ t1.getMapstatus());
-						
+
 					}
 					break;
 				case 5:
@@ -132,7 +134,7 @@ public class Main {
 					}else {
 						System.out.println("not updated");
 					}
-				break;
+					break;
 				case 8:
 					System.out.println("update training details");
 					System.out.println("enter training id to updated");
@@ -149,12 +151,12 @@ public class Main {
 					result=tdao.updateTraining(updtr);
 					if (result) {
 						System.out.println("updated");
-						
+
 					}else {
 						System.out.println("not updated");
 					}
-              break;
-              
+					break;
+
 				case 9:
 					System.out.println("assign training ");
 					System.out.println("enter uid");
@@ -162,6 +164,7 @@ public class Main {
 					System.out.println("enter tid");
 					int tid2=sc.nextInt();
 					result=tdao.assigntraining(uid2, tid2);
+
 					if(result) {
 						System.out.println("assigned pedning ");
 					}else {
@@ -176,27 +179,27 @@ public class Main {
 					int tid3=sc.nextInt();
 					result=tdao.markcomplete(uid3, tid3);
 					if(result) {
-				          System.out.println("updated");
+						System.out.println("updated");
 					}else {
 						System.out.println("not updated");
 					}
 					break;
-					
+
 				case 11:
 					System.out.println("over due details");
-					    t = tdao.getoverdue();
+					t = tdao.getoverdue();
 					for(int i=0;i<t.size();i++) {
 						Training t2=t.get(i);
 						if(t2.getMapstatus().isEmpty() ) {
 							continue;	
 						}else if(t2.getMapstatus().containsValue("completed")) {
-							
+
 							continue;
 						}else {
-						System.out.println("Over due details "+"Training id "+ t2.getTid() + ", Training Title " + t2.getTitle() + ",Training due date "+ t2.getDuedate()+", status "+ t2.getMapstatus());
+							System.out.println("Over due details "+"Training id "+ t2.getTid() + ", Training Title " + t2.getTitle() + ",Training due date "+ t2.getDuedate()+", status "+ t2.getMapstatus());
+						}
 					}
-					}
-             break;
+					break;
 				case 12:
 					System.out.println("get assigned trainings");
 					System.out.println("enter uid");
@@ -205,19 +208,19 @@ public class Main {
 					if(t.isEmpty()) {
 						System.out.println("no trainings assigned");
 					}else {
-					for(int i=0;i<t.size();i++) {
-						Training assign=t.get(i);
-						if(assign.getMapstatus().containsValue("pending")) {
-							System.out.println(assign.getTitle()+" is pending");
-						}else if(assign.getMapstatus().containsValue("completed")) {
-							System.out.println(assign.getTitle()+" is completed");
+						for(int i=0;i<t.size();i++) {
+							Training assign=t.get(i);
+							if(assign.getMapstatus().containsValue("pending")) {
+								System.out.println(assign.getTitle()+" is pending");
+							}else if(assign.getMapstatus().containsValue("completed")) {
+								System.out.println(assign.getTitle()+" is completed");
+							}
 						}
 					}
-					}
-					
-				break;	
+
+					break;	
 				case 13:
-					
+
 					System.out.println("Search based on keyword");
 					System.out.println("enter title");
 					sc.nextLine();
@@ -228,42 +231,77 @@ public class Main {
 					}else {
 						for(int i=0;i<t.size();i++) {
 							Training search=t.get(i);
-						    System.out.println(" Training found at : "+ " training id "+search.getTid()+",training title "+search.getTitle()+",training due date "+ search.getDuedate()+",training status "+search.getMapstatus());	
+							System.out.println(" Training found at : "+ " training id "+search.getTid()+",training title "+search.getTitle()+",training due date "+ search.getDuedate()+",training status "+search.getMapstatus());	
 						}
 					}
 					break;
-					
-					
+
+
 				case 14:
 					System.out.println("assign training to multiple users");
-                    System.out.println("select tid");
+					System.out.println("select tid");
 					t=tdao.getTraining();
 					for(int i=0;i<t.size();i++) {
 						Training tr=t.get(i);
 						System.out.println(" tid "+tr.getTid()+ " ,title "+tr.getTitle()+" ,duedate "+tr.getDuedate()+" ,status "+tr.getMapstatus());
 					}
+
+
 					int tid5=sc.nextInt();
-                    sc.nextLine();
-                    System.out.println("select uid");
+					sc.nextLine();
+					System.out.println("select uid");
 					u=tdao.getUser();
 					for(int i=0;i<u.size();i++) {
 						User ur=u.get(i);
 						System.out.println(" uid "+ur.getUid()+" ,uname "+ur.getUname()+" ,urole "+ur.getUrole());
 					}
-					sc.nextLine();
-			        result=tdao.multipletraining(u, tid5);
+					List<Integer> uidslist=new ArrayList<Integer>();
+					System.out.println("Enter the no of uids no assign now:");
+					int nouids=sc.nextInt();
+					for(int i=0;i<nouids;i++) {
+						System.out.println("Enter uid");
+						int tempuid=sc.nextInt();
+						uidslist.add(tempuid);
+					}
+					tdao.multipleuserspending(uidslist, tid5);
+					break;
+
+				case 15:
+
+					System.out.println("get assigned user by date");
+					System.out.println("enter date");
+					String duedate=sc.next();
+					LocalDate date1=LocalDate.parse(duedate);
+					List<Training> tlist = tdao.getduedatebydate(date1);
+					
+					List<User> users=tdao.getUser();
+					
+					for(int i=0;i<tlist.size();i++) {
+						Training t3=tlist.get(i);
+						int tid6=t3.getTid();
+						String title1=t3.getTitle();
+						Map<Integer,String> statusmap=t3.getMapstatus();
+						
+						for(int j=0;j<users.size();j++) {
+							User u3=users.get(j);
+							int id1=u3.getUid();
+							
+							if(statusmap.containsValue("pending")) {
+							System.out.println(" Title "+ t3.getTitle() +" user id "+ u3.getUid() + "  is pending ");
+						}
+						}
+					}
+					break;	
 				
-				break;
-				}
-				}
-			
-			
-			
+			}
+			}
+
+
 		}while(ch!=15);
 
-		
+
 	}  
 
-	
-	
+
+
 }

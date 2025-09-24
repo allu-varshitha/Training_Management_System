@@ -36,10 +36,7 @@ public class User {
 	public void setUrole(String urole) {
 		this.urole = urole;
 	}
-	public void setUid(String uid4) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 	
 	
 }

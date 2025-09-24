@@ -1,5 +1,6 @@
 package com.rgt.employee.dao;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +25,8 @@ public interface TrainingDAO {
 	
 	public List<Training> searchkey(String title);
 	
-	public boolean multipletraining(List<User> uid,int tid);
+	public void multipleuserspending(List<Integer> uid,int tid);
+	
+	public List<Training> getduedatebydate(LocalDate date);
 	
 }
