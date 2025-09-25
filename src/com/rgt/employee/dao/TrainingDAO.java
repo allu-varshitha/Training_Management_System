@@ -12,6 +12,7 @@ public interface TrainingDAO {
 	public boolean insertUsers(User u);
 	public boolean insertTraining(Training t);
 	public ArrayList<User> getUser();
+	public User getUserById(int uid);
 	public ArrayList<Training> getTraining();
 	public boolean deleteUser(User u);
 	public boolean deleteTraining(Training t);
@@ -27,6 +28,8 @@ public interface TrainingDAO {
 	
 	public void multipleuserspending(List<Integer> uid,int tid);
 	
-	public List<Training> getduedatebydate(LocalDate date);
+	public List<Training> getduebydate(LocalDate date);
+	
+	public List<Training> gettrainingwithinrange(LocalDate from,LocalDate to);
 	
 }

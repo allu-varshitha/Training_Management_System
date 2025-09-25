@@ -38,8 +38,9 @@ public class Main {
 				System.out.println("12.get assigned trainings");
 				System.out.println("13.search key");
 				System.out.println("14.multiple trainings");
-				System.out.println("15.get assigned user by date");
-				System.out.println("16.exit");
+				System.out.println("15.get assigned user,training by specific date");
+				System.out.println("16. get due date with in a range");
+				System.out.println("17.exit");
 				ch=sc.nextInt();
 				switch(ch)
 				{
@@ -268,36 +269,51 @@ public class Main {
 
 				case 15:
 
-					System.out.println("get assigned user by date");
+					System.out.println("get assigned users ,trainings  by specfic date");
 					System.out.println("enter date");
-					String duedate=sc.next();
-					LocalDate date1=LocalDate.parse(duedate);
-					List<Training> tlist = tdao.getduedatebydate(date1);
-					
-					List<User> users=tdao.getUser();
-					
-					for(int i=0;i<tlist.size();i++) {
-						Training t3=tlist.get(i);
-						int tid6=t3.getTid();
-						String title1=t3.getTitle();
-						Map<Integer,String> statusmap=t3.getMapstatus();
-						
-						for(int j=0;j<users.size();j++) {
-							User u3=users.get(j);
-							int id1=u3.getUid();
+					String date1=sc.next();
+					LocalDate duedate=LocalDate.parse(date1);
+					t=tdao.getduebydate(duedate);
+					for(int i=0;i<t.size();i++) {
+						Training tr=t.get(i); //on every iteration extracting training
+						List<Integer> uidslist1=new ArrayList<>(tr.getMapstatus().keySet());//converting to list
+						for(int j=0;j<uidslist1.size();j++) {
+							int presentuid=uidslist1.get(j);
+							if(tr.getMapstatus().get(presentuid).equals("pending")) {
+								User ur=tdao.getUserById(presentuid);
+								System.out.println("Training:"+tr.getTitle()+" is pending for user:"+presentuid+"--"+ur.getUname());
+							}
 							
-							if(statusmap.containsValue("pending")) {
-							System.out.println(" Title "+ t3.getTitle() +" user id "+ u3.getUid() + "  is pending ");
 						}
-						}
-					}
+	
+				}
 					break;	
-				
+				case 16:
+					System.out.println("get overdue of trainings within a specific range");
+					System.out.println("eneter from date");
+					String fromdate=sc.next();
+					LocalDate fromdue=LocalDate.parse(fromdate);
+					
+					System.out.println("enter to date");
+					String todate=sc.next();
+					LocalDate todue=LocalDate.parse(todate);
+					
+					t = tdao.gettrainingwithinrange(fromdue,todue);
+					for(int i=0;i<t.size();i++) {
+						Training t2=t.get(i);
+						if(t2.getMapstatus().isEmpty()) {
+							continue;
+						}
+							System.out.println("Over due details "+"Training id "+ t2.getTid() + ", Training Title " + t2.getTitle() + ",Training due date "+ t2.getDuedate()+", status "+ t2.getMapstatus());
+						}
+					
+					break;
 			}
 			}
+			
+            
 
-
-		}while(ch!=15);
+		}while(ch!=17);
 
 
 	}  

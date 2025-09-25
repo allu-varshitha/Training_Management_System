@@ -341,7 +341,7 @@ public class TrainingDAOImpl implements TrainingDAO{
 		int i=0;
 		for(int j=0;j<uids.size();j++) {
 			
-//			assigntraining(uids.get(j), tid);
+//			assigntraining(uids.get(j), tid); 
 			
 			PreparedStatement ps;
 			try {
@@ -362,18 +362,65 @@ public class TrainingDAOImpl implements TrainingDAO{
 	}
 
 	@Override
-	public List<Training> getduedatebydate(LocalDate date) {
+	public List<Training> getduebydate(LocalDate date) {
 		String query=" select * from training where duedate <= ?  ";
 
 		ArrayList<Training> duelist=new ArrayList<>();
 		try {
 			PreparedStatement ps=con.prepareStatement(query);
-			ps.setObject(1,LocalDate.now());
+			ps.setObject(1,date);
 			ResultSet rs = ps.executeQuery();
 			while(rs.next()) {
 				Training t=new Training();
 				t.setTid(rs.getInt("Tid"));
 				t.setTitle(rs.getString("Title"));
+				t.setDuedate(rs.getDate("duedate").toLocalDate());
+				t.setMapstatus(getstatus(t.getTid()));
+				duelist.add(t);
+				
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return duelist;
+	}
+
+	@Override
+	public User getUserById(int uid) {
+
+		String query="select * from users where uid=?";
+		User u=new User();
+
+		try {
+			PreparedStatement ps=con.prepareStatement(query);
+			ps.setInt(1, uid);
+			ResultSet rs=ps.executeQuery();
+
+			while(rs.next()) {
+				u.setUid(rs.getInt("uid"));
+				u.setUname(rs.getString("uname"));
+				u.setUrole(rs.getString("urole"));
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return u;
+	}
+
+	@Override
+	public List<Training> gettrainingwithinrange(LocalDate fromdate, LocalDate todate) {
+
+		String query="select * from Training where duedate>=? and duedate<=?";
+		ArrayList<Training> duelist=new ArrayList<>();
+		try {
+			PreparedStatement ps=con.prepareStatement(query);
+			ps.setObject(1, fromdate);
+			ps.setObject(2, todate);
+			ResultSet rs=ps.executeQuery();
+			while(rs.next()) {
+				Training t=new Training();
+				t.setTid(rs.getInt("tid"));
+				t.setTitle(rs.getString("title"));
 				t.setDuedate(rs.getDate("duedate").toLocalDate());
 				t.setMapstatus(getstatus(t.getTid()));
 				duelist.add(t);
